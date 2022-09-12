@@ -1,0 +1,193 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+const NewProduct = () => {
+  const [product, setProduct] = useState({
+    product_name: '',
+    cost: 0,
+    amount_available: 0,
+  });
+  const { id } = useParams();
+  const [reqStatus, setReqStatus] = useState(undefined);
+  const url = process.env.REACT_APP_BASEAPI_URL;
+  const successString = id
+    ? 'Update successfull'
+    : 'Product added successfully';
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  console.log(id);
+
+  const user_token = sessionStorage.getItem('user_token');
+  const addProductRequest = async (userData) => {
+    try {
+      const response = await axios.post(
+        `${url}/auth/create_product`,
+        {
+          product_name: userData.product_name,
+          cost: parseInt(userData.cost, 10),
+          amount_available: parseInt(userData.amount_available, 10),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user_token}`,
+          },
+        }
+      );
+      return response.status;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  const updateProductRequest = async (userData) => {
+    try {
+      const response = await axios.put(
+        `${url}/auth/update_product/${id}`,
+        {
+          product_name: userData.product_name,
+          cost: parseInt(userData.cost, 10),
+          amount_available: parseInt(userData.amount_available, 10),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user_token}`,
+          },
+        }
+      );
+      return response.status;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const response = await axios.get(`${url}/auth/get_product/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user_token}`,
+        },
+      });
+      console.log(response);
+      setProduct({
+        product_name: response.data.product_name,
+        cost: response.data.cost,
+        amount_available: response.data.amount_available,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (product.product_name === '') {
+      alert('Please type a product name');
+      return;
+    }
+
+    if (product.cost <= 0 || product.cost % 5 !== 0) {
+      alert('Invalid product cost');
+      return;
+    }
+
+    if (product.amount_available <= 0) {
+      alert('Invalid product amount');
+      return;
+    }
+
+    const result = await (id
+      ? updateProductRequest(product)
+      : addProductRequest(product));
+    if (result === 200) {
+      setReqStatus(true);
+      setTimeout(() => {
+        setReqStatus(undefined);
+        window.location.reload();
+      }, 5000);
+    } else {
+      setReqStatus(false);
+      setTimeout(() => {
+        setReqStatus(undefined);
+      }, 5000);
+    }
+    console.log('result', result);
+    console.log('req', reqStatus);
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchProduct();
+    }
+  }, []);
+
+  return (
+    <div className="mt-12">
+      <h3 className="ml-8">{id ? 'Edit Product' : 'Add a new Product'}</h3>
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="mx-auto flex w-[80%] max-w-md flex-col gap-8"
+      >
+        <div>
+          <label htmlFor="name">Product Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={product.product_name}
+            name="product_name"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="cost">Cost:</label>
+          <input
+            type="number"
+            id="cost"
+            value={product.cost}
+            name="cost"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="amount">Number of units:</label>
+          <input
+            type="number"
+            id="amount"
+            value={product.amount_available}
+            name="amount_available"
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <button type="submit" className="w-[150px] bg-blue-600 py-2 text-white">
+          {id ? 'update product' : 'add product'}
+        </button>
+        {reqStatus !== undefined && (
+          <div
+            className={`rounded-sm p-4 text-${
+              reqStatus === true ? 'green' : 'red'
+            }-600 bg-${reqStatus === true ? 'green' : 'red'}-300`}
+          >
+            <p className={`text-${reqStatus ? 'green' : 'red'}-300`}>
+              {reqStatus
+                ? successString
+                : 'Failed to add product, please try again'}
+            </p>
+          </div>
+        )}
+      </form>
+    </div>
+  );
+};
+
+export default NewProduct;
