@@ -2,12 +2,6 @@
 
 Learn how to quickly set up a `React.js` project with Tailwind CSS using the [starter kit](https://github.com/labnol/react-tailwind). The project was bootstrapped with Create React App (CRA) and it uses PurgeCSS to remove all the unused CSS classes from the production build.
 
-## Live Demo
-
-The [Digital Inspiration](https://digitalinspiration.com/) website is built with the Tailwind CSS, React.js and Gatsby.
-
-[CodeSandbox](https://codesandbox.io/s/github/labnol/react-tailwind) | [Glitch](https://glitch.com/edit/#!/remix/react-tailwindcss) | [Vercel](https://csb-ggfl7-ipit3clvr.vercel.app/)
-
 ### Available npm scripts
 
 In the project directory, you can run:
@@ -30,8 +24,3 @@ The build is minified and the filenames include the hashes. Your app is ready to
 
 This command uses `Gulp` to inline all the JavaScript and CSS files from the production build into a single minified file.
 
-### 📧 Contact
-
-The React and Tailwind CSS starter is written by [Amit Agarwal](https://www.labnol.org/about). It is now updated to support Tailwind CSS v2.0.
-
-If you have any questions or feedback, send an email at [amit@labnol.org](mailto:amit@labnol.org?subject=Tailwind+React).
