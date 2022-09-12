@@ -48,14 +48,6 @@ const Store = () => {
     }
   };
 
-  const getBalance = (arr) => {
-    let counter = 0;
-    for (let i = 0; i < arr.length; i += 1) {
-      counter += arr[i];
-    }
-    return counter;
-  };
-
   const user_token = sessionStorage.getItem('user_token');
   const handlePurchase = async () => {
     try {
@@ -78,11 +70,7 @@ const Store = () => {
       }
       if (response.status === 200) {
         alert(`
-          Purchase successfull\nTotal purchase: ${
-            response.data.total_price
-          }\nQuantity: ${response.data.quantity}\nBalance: ${getBalance(
-          response.data.change
-        )}`);
+        Purchase successfull\nTotal purchase: ${response.data.total_price}\nQuantity: ${response.data.quantity}\nBalance: ${response.data.change}`);
         setCount(1);
         setBuy((prevState) => ({
           ...prevState,
@@ -91,7 +79,8 @@ const Store = () => {
       }
       console.log(response.status);
     } catch (error) {
-      alert('Not enough money please deposit');
+      console.log('er', error.response.data.error);
+      alert(error.response.data.error);
     }
   };
 
