@@ -22,7 +22,6 @@ const NewProduct = () => {
       [name]: value,
     }));
   };
-  console.log(id);
 
   const user_token = sessionStorage.getItem('user_token');
   const addProductRequest = async (userData) => {
@@ -43,7 +42,6 @@ const NewProduct = () => {
       );
       return response.status;
     } catch (error) {
-      console.log(error);
       return error;
     }
   };
@@ -66,7 +64,6 @@ const NewProduct = () => {
       );
       return response.status;
     } catch (error) {
-      console.log(error);
       return error;
     }
   };
@@ -79,7 +76,6 @@ const NewProduct = () => {
           Authorization: `Bearer ${user_token}`,
         },
       });
-      console.log(response);
       setProduct({
         product_name: response.data.product_name,
         cost: response.data.cost,
@@ -122,50 +118,59 @@ const NewProduct = () => {
         setReqStatus(undefined);
       }, 5000);
     }
-    console.log('result', result);
-    console.log('req', reqStatus);
   };
 
   useEffect(() => {
     if (id) {
       fetchProduct();
     }
-  }, []);
+  }, [id]);
 
   return (
-    <div className="mt-12">
-      <h3 className="ml-8">{id ? 'Edit Product' : 'Add a new Product'}</h3>
+    <div className="mt-48">
+      <h3 className="mx-auto mb-6 w-[80%] max-w-[800px] text-xl">
+        {id ? 'Edit Product' : 'Add a new Product'}
+      </h3>
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="mx-auto flex w-[80%] max-w-md flex-col gap-8"
       >
-        <div>
-          <label htmlFor="name">Product Name:</label>
+        <div className="flex flex-col justify-between md:flex-row">
+          <label htmlFor="name" className="basis-full md:basis-4/12">
+            Product Name:
+          </label>
           <input
             type="text"
             id="name"
             value={product.product_name}
             name="product_name"
+            className="basis-6/12"
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div>
-          <label htmlFor="cost">Cost:</label>
+        <div className="flex flex-col justify-between md:flex-row">
+          <label htmlFor="cost" className="basis-full md:basis-4/12">
+            Cost:
+          </label>
           <input
             type="number"
             id="cost"
             value={product.cost}
             name="cost"
+            className="basis-6/12"
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div>
-          <label htmlFor="amount">Number of units:</label>
+        <div className="flex flex-col justify-between md:flex-row">
+          <label htmlFor="amount" className="basis-full md:basis-4/12">
+            Number of units:
+          </label>
           <input
             type="number"
             id="amount"
             value={product.amount_available}
             name="amount_available"
+            className="basis-6/12"
             onChange={(e) => handleChange(e)}
           />
         </div>
