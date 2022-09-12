@@ -706,6 +706,10 @@ a {
   margin-left: 1rem;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .mt-12 {
   margin-top: 3rem;
 }
@@ -720,10 +724,6 @@ a {
 
 .mr-2 {
   margin-right: 0.5rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .block {
